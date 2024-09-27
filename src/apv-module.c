@@ -5,16 +5,16 @@
 #include <stdio.h>
 #include <sys/mman.h>
 
-#define ALFA 1
-#define BETA 1
-#define GAMMA 1
-#define OMEGA 1
-#define MU 1
-#define THETA 1
-#define EPS 1
+#define ALPHA 0.1
+#define EPSILON 0.01
+#define THETA 0.015
+#define MU 0.05
+#define OMEGA 0.01
+#define BETA 0.015
+#define GAMMA 0.15
 
 #define VAR_NUMBER 3
-#define dadt(a, p) ((ALFA * a) - (EPS * p * a));
+#define dadt(a, p) ((ALPHA * a) - (EPSILON * p * a));
 #define dpdt(a, p, v) ((THETA * p * a) - (MU * p) - (OMEGA * p * v))
 #define dvdt(p, v) ((BETA * p * v) - (GAMMA * v))
 
@@ -28,7 +28,7 @@ double *next(double *x, double h) {
   double increments[VAR_NUMBER];
   f(x[0], x[1], x[2], increments);
   for (int i = 0; i < VAR_NUMBER; i++) {
-    x[VAR_NUMBER + i] = fmax(0, x[i] + (h * increments[i]));
+    x[VAR_NUMBER + i] = x[i] + (h * increments[i]);
   }
   return x + VAR_NUMBER;
 }
